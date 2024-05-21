@@ -27,6 +27,8 @@ Route::get('/', function () {
 Route::get("/posts","PostController@index")->name('post.index');
 // CRUD-Ի համար որպեսզի ավելացնենք poste-երը
 Route::post("/posts","PostController@store")->name('post.store');
+// Կոնկրետ որևէ մեկը
+Route::get("/posts/{post}","PostController@show")->name('post.show');
 
 // Ստեղծում ենք Route միայն տվյալների բազայում օբյեկտ սեղծելու համար։
 Route::get("/posts/create","PostController@create");

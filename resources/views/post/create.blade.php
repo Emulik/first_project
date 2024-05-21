@@ -8,7 +8,7 @@
     </div>
     <div class="mb-3">
         <label for="content" class="form-label">Content</label>
-        <textarea name="content" class="form-control" id="content" placeholder = "Content"></textarea>
+        <textarea name="post_content" class="form-control" id="content" placeholder = "Content"></textarea>
     </div>
     <div class="mb-3">
         <label for="image" class="form-label">Image</label>

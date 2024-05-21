@@ -43,6 +43,18 @@ class PostController extends Controller
         return view('post.index',compact('posts'));
 
     }
+    // տեսնենք որտեղից ենք ստանում id-ն
+    // Համընկնում է url-ում գրվածին
+    public function show($id){
+        // dump($id);
+        $post = Post::find($id);
+       
+        dd($post->title);
+        // Եթե այդպիսի id -ի չկա մեզ կվերադարձնի սխալ, բայց այդպես պետք է 
+        // չլինի
+        $post = Post::findOrFail($id);
+        
+    }
     // Ստեղծում ենք տվյալներ
     // public function create(){
     //     Post::create([
@@ -88,12 +100,13 @@ class PostController extends Controller
         // վերահսկողությոնը թե ինչ տեսակի պետք է լինեն
         $data = request()->validate([
             'title'=>'string',
-            'content'=>'string',
+            'post_content'=>'string',
             'image'=>'string',
         ]);
         // dd(1111111);
         // dd($data);
         Post::create($data); 
+        return redirect()->route('post.index');
     }
     // public function update(){
     //     // թարմացնելու համար ստանանք որևէ տվյալ
