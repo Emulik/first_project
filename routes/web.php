@@ -24,26 +24,36 @@ Route::get('/', function () {
 // Կարող ենք այստեղ callback-ը չգրել փոխարենը ֆունկցիան գրել controller-ում որպես
 // public function: Եվ երբ ուզում եմ կոնկրետ ասեմ router-ին թե որ ֆունկցիան օգտագործի
 // ապա նշում ենք controller-ի անունը և հետ դնում @ և ֆունկցիայի անունը։
-Route::get("/posts","PostController@index")->name('post.index');
+// Route::get("/posts","PostController@index")->name('post.index');
 // CRUD-Ի համար որպեսզի ավելացնենք poste-երը
-Route::post("/posts","PostController@store")->name('post.store');
+// Route::post("/posts","PostController@store")->name('post.store');
 // Կոնկրետ որևէ մեկը
-Route::get("/posts/{post}","PostController@show")->name('post.show');
+// Route::get("/posts/{post}","PostController@show")->name('post.show');
 
 // Ստեղծում ենք Route միայն տվյալների բազայում օբյեկտ սեղծելու համար։
-Route::get("/posts/create","PostController@create");
+// Route::get("/posts/create","PostController@create");
 
 // Ստեղծում ենք Route միայն տվյալները թարմացնելու համար։
-Route::get("/posts/update","PostController@update");
+// Route::get("/posts/update","PostController@update");
 
 // Ստեղծում ենք Route միայն տվյալները ջնջելու համար։
-Route::get("/posts/delete","PostController@delete");
+// Route::get("/posts/delete","PostController@delete");
 // Կոմբինացված մեթոդներ
-Route::get("/posts/firts_or_create","PostController@firtsOrCreate");
-Route::get("/posts/update_or_create","PostController@updateOrCreate");
+// Route::get("/posts/firts_or_create","PostController@firtsOrCreate");
+// Route::get("/posts/update_or_create","PostController@updateOrCreate");
 
 // View դասի համար էջերը
 
-Route::get("/about","AboutController@index")->name('about.index');
-Route::get("/main","MainController@index")->name('main.index');
-Route::get("/contacts","ContactController@index")->name('contact.index');
+// Route::get("/about","AboutController@index")->name('about.index');
+// Route::get("/main","MainController@index")->name('main.index');
+// Route::get("/contacts","ContactController@index")->name('contact.index');
+
+
+Route::group(['namespace'=>'Post'], function(){
+    Route::get("/posts","IndexController")->name('post.index');
+    Route::get("/posts/create","CreateController")->name('post.create');
+    Route::post("/posts","StoreController")->name('post.store');
+    Route::get("/posts/{post}","ShowController")->name('post.show');
+    Route::get("/posts/update","UpdateController")->name('post.update');
+    Route::get("/posts/delete","DeleteController")->name('post.delete');
+});
