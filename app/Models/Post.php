@@ -20,4 +20,12 @@ class Post extends Model
     // protected $guarded=false; 
 
     // protected $fillable=['title','content'];
+    public function category(){
+        return $this->belongsTo(Category::class, 'category_id','id');
+    }
+    public function  tags(){
+        // վերջին-ը, թե որ դաշտի հետ ա կապված(հարաբերված)Post-ը
+        // Երկրորդը աղյուսակը, երրորդը որն է post-երի id-ն է foreign -key-ը
+        return $this->belongsToMany(Tag::class, 'post_tags','post_id','tag_id');
+    }
 }

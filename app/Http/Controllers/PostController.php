@@ -1,100 +1,151 @@
 <?php
 
 namespace App\Http\Controllers;
+
 // պետք է import անենք Post class-ը։
 
 
 use App\Models\Post;
+use App\Models\Category;
+use App\Models\Tag;
+use App\Models\PostTag;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     public function index(){
-        // return "This is my page";
-        // $str = "Hello world";
-        // dd($str);
-        // echo "djhfkhdjkf";
-        // $post = Post::find(1);
+      
+        // $post = Post::all();
         // dump($post);
-        // dump($post->id);
-        // dump($post->title);
-        // $posts = Post::all();
-        //  dump($posts);
-        $posts = Post::all();
-        // foreach($posts as $post){
-        //     dump($post->title);
-        // }
-        // dd('end');
-        // $posts = Post::where("is_published",1)->get();
-        // foreach($posts as $post){
-        //     dump($post->title);
-        // }
-        // dd('end');
-        // $post = Post::where('is_published',1)->first();
-        // dump($post->title);
-        // return view('posts',compact('posts'));
-        // return view('posts', [
-        //     'posts' => Post::all(),
-        // ]);
-        // dump(compact("posts"));
-        // compact- ստեղծում է զանգված, որը փարունակում է փոփոխականներ
-        // և արժեքներ
+        // $category = Category::find(1);
+        // $posts = Post::where('category_id',$category->id)->get();
+        // dd($posts);
 
-        return view('post.index',compact('posts'));
+
+        // $post = Post::find(1);
+        // dd($post->category);
+        // Այնպես անենք որ տեսնենք teп-երը
+
+        // $post = Post::find(1);
+        // dd($post->tags);
+        // Գնում ենք model Post 
+        // Եվ էջը թարմացնելիս տեսնում ենք տեգերը
+       
+        // նույնը անում ենք tag-երի համար։
+        // $tag = Tag::find(1);
+        // dd($tag->posts);
+        // պետք է import անենք Tag Model-ի class-ը
+
+        // Create-ից հետո
+        $posts = Post::all();
+        return view('post.index', compact('posts'));
+
+
+
 
     }
     // Ստեղծում ենք տվյալներ
-    // public function create(){
-    //     Post::create([
-    //         'title'=>'some post',
-    //         'content'=>' some content',
-    //         'image'=>'image1.jpg',
-    //         'likes'=> 20,
-    //         'is_published'=> 1
-    //     ]);
-    //     dd('created');
+    public function create(){
+        // Post::create([
+        //     'title'=>'some post',
+        //     'post_content'=>' some content',
+        //     'image'=>'image1.jpg',
+        //     'likes'=> 20,
+        //     'is_published'=> 1
+        // ]);
+        // dd('created');
         
-    //     // $postsArr=[
-    //         // [
-    //         //     'title'=>'some post',
-    //         //     'content'=>' some interesting content',
-    //         //     'image'=>'image.jpg',
-    //         //     'likes'=> 25,
-    //         //     'is_published'=> 1
-    //         // ],
-    //         // [
-    //         //     'title'=>'another title of post from php',
-    //         //     'content'=>' another some interesting content',
-    //         //     'image'=>'image1.jpg',
-    //         //     'likes'=> 20,
-    //         //     'is_published'=> 1
-    //         // ],
-    //     // ];
-    //     // foreach($postsArr as $item){
-    //     //     // dd($item);
-    //     //     Post::create($item);
-    //     // }
-    //     // dd('created');
+        // $postsArr=[
+        //     [
+        //         'title'=>'some post',
+        //         'post_content'=>' some interesting content',
+        //         'image'=>'image.jpg',
+        //         'likes'=> 25,
+        //         'is_published'=> 1
+        //     ],
+        //     [
+        //         'title'=>'another title of post from php',
+        //         'post_content'=>' another some interesting content',
+        //         'image'=>'image1.jpg',
+        //         'likes'=> 20,
+        //         'is_published'=> 1
+        //     ],
+        // ];
+        // foreach($postsArr as $item){
+            // dd($item);
+    //         Post::create($item);
+        // }
+        // dd('created');
+        // return view('post.create');
+        // Հաջորդ դաս tag-երի ստեղծելու համար
+        // Bootstrap-ում form control
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('post.create', compact('categories','tags'));
+        // Հաջորդ-ը store-ֆունկցիայում պետք է ավելացնենք
+
+
 
         
+    }
+     
+    // public function create(){
+    //     // հիմա կգրենք միայն սա
+    //     return view('post.create');
+    //     // իսկ post.create ֆայլում կլինի մուտքագրման դաշտ որը կավելացնի post-եր։
     // }
-        // petq է view-ի համար առանձին ֆունկցիա ստեղծենք
-    public function create(){
-        // հիմա կգրենք միայն սա
-        return view('post.create');
-        // իսկ post.create ֆայլում կլինի մուտքագրման դաշտ որը կավելացնի post-եր։
+    public function edit(Post $post){
+        // put եթե մի բան ավելացնում ենք, իսկ եթե թարմացնում ենք patch
+        // return view('post.edit', compact('post'));
+
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('post.edit', compact('post','categories','tags'));
+        // Ցույց ենք տալիս,  թե օգտատերը ինչ սխալներ է թույլ տվել։
     }
     public function store(){
         // վերահսկողությոնը թե ինչ տեսակի պետք է լինեն
+        // Այստեղ ավելացնելով category_id արդեն կստեղծվի ինչ-որ կատեգորիային կապված
         $data = request()->validate([
             'title'=>'string',
-            'content'=>'string',
+            'post_content'=>'string',
             'image'=>'string',
+            'category_id'=>'',
+            'tags'=>'',
         ]);
+       
+        // եվ տպենք $date
         // dd(1111111);
         // dd($data);
-        Post::create($data); 
+        // Սա կփակենք և կստեղծվի նոր post caterory-յի հետ կապված։
+        // Post::create($data); 
+        // return redirect()->route('post.index');
+         // Բայց խնդիր է առաջանում data-ում ավելացվում է tags եթե ցանկանամ ստեղծել post 
+        // այս data-ով կվեր ադարձնի Error: Չկա ատտրիբուտ tags  posts աղյուսակում։
+        $tags = $data['tags'];
+        unset($data['tags']);
+
+        // dd($tags, $data);
+        // որպեսզի առանձին ստեղծել պահենք փոփոխականի մեջ
+        // $post = Post::create($data); 
+        // return redirect()->route('post.index');
+        
+        $post = Post::create($data);
+        // foreach($tags as $tag){
+        //     PostTag::firstOrCreate([
+        //         'tag_id'=>$tag,
+        //         'post_id'=>$post->id,
+        //     ]);
+        // }
+        // Հաջորդ տարբերակը
+
+        // Կանչում ենք Post model-ի tags մեթոդը և դարձնում ենք հարցում db: 
+        // Այստեղ նշում ենք վերցրու post-ը այնտեղ կան տեգեր։
+        // post-երը Միացրու teg-երին
+        $post->tags()->attach($tags);
+
     }
+
     // public function update(){
     //     // թարմացնելու համար ստանանք որևէ տվյալ
     //     // $post = Post::find(6);
@@ -116,6 +167,29 @@ class PostController extends Controller
     //     // ]);
     //     // dd("updated");
     // }
+    public function update(Post $post){
+        $data = request()->validate([
+            'title'=>'string',
+            'post_content'=>'string',
+            'image'=>'string',
+            'category_id'=>'',
+            'tags' => ''
+        ]);
+        $tags = $data['tags'];
+        unset($data['tags']);
+        // dd($data);
+        $post->update($data);
+        // $post = $post->fresh();
+        // $post ->tags()->attach($tags);
+        // Որպեսզի DB-ում նշվածները ջնջի և ավելացնի այն որը նշում ենք
+        $post ->tags()->sync($tags);
+        return redirect()->route('post.show', $post->id);
+
+    }
+    public function destroy(Post $post){
+        $post->delete();
+        return redirect()->route('post.index');
+    }
     public function delete(){
         // Այս էջում ենք թե ոչ
         // dump('delete page');
@@ -131,6 +205,19 @@ class PostController extends Controller
         // տվյալները օգտագործում ենք soft delete: Կջնջվի, բայց կպահպանվի և ոչ մի տեղ չի երևա:
         // migrations պապկայի մեջ ավելցնում ենք այս տողը $table->softDeletes();
         // և Post class-ում ավելացնել traits use SoftDeletes;
+    }
+    // public function show($id){
+    //     $post = Post::find($id);
+    //     // Այս մեթոդը նրա համար է, եթե այդպիսի id - ում տվյալ չլինի
+    //     // վերադարձնի user -ի համար հարմար էջ։
+    //     $post = Post::findOrFail($id);
+    //     dd($post->title);
+    // } 
+    // երկրորդ գրելաձևը non found-ի համար։ս
+    // Գրում ենք Model Post Laravel-ը այդ ամենը կանի մեր փոխարեն
+    public function show(Post $post){
+        // dd($post->title);
+        return view('post.show', compact('post'));
     }
 
     public function firtsOrCreate(){
@@ -170,4 +257,5 @@ class PostController extends Controller
       
     }
 }
+
 

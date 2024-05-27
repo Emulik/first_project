@@ -22,6 +22,8 @@ class CreatePostsTable extends Migration
             $table->boolean('is_published')->default(1);
             $table->timestamps();
             $table->softDeletes();
+            // Այստեղ պետք է գրենք category_id վերցնում ենք մոդելի անունը _ և id:
+           $table->integer('category_id')->nullable()->unsigned();
         });
 
     }

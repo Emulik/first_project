@@ -27,9 +27,16 @@ Route::get('/', function () {
 Route::get("/posts","PostController@index")->name('post.index');
 // CRUD-Ի համար որպեսզի ավելացնենք poste-երը
 Route::post("/posts","PostController@store")->name('post.store');
+Route::get("/posts/create","PostController@create")->name('post.create');
+Route::get("/posts/{post}/edit","PostController@edit")->name('post.edit');
+Route::patch("/posts/{post}","PostController@update")->name('post.update');
+Route::delete("/posts/{post}","PostController@destroy")->name('post.delete');
+
+// Որպեսզի ցուցադրենք կոնկրետ մեկը
+Route::get("/posts/{post}","PostController@show")->name('post.show');
 
 // Ստեղծում ենք Route միայն տվյալների բազայում օբյեկտ սեղծելու համար։
-Route::get("/posts/create","PostController@create");
+// Route::get("/posts/create","PostController@create");
 
 // Ստեղծում ենք Route միայն տվյալները թարմացնելու համար։
 Route::get("/posts/update","PostController@update");
